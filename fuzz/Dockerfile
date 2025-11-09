@@ -6,6 +6,7 @@ ENV AFL_SKIP_CPUFREQ=0
 # Copying in the target program source code
 RUN mkdir /target
 COPY js.c /target
+ADD /in /target/in
 
 # TODO: Complete this Dockerfile.
 # Carry out all necessary steps to clone, build, and install AFL++,
