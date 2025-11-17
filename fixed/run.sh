@@ -1,6 +1,5 @@
 #!/bin/bash
 
-docker rm -f asg2 2>/dev/null || true
 docker build -t sshs_asg2 -f Dockerfile .
 docker run --privileged --name asg2 -v .:/workspace -it sshs_asg2 sh -c "
 	echo 'Running original program with input crashes/id:000000...' &&
