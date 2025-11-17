@@ -1,0 +1,41 @@
+--- js.c	2025-11-16 22:36:36.224208417 +0000
++++ js-fixed.c	2025-11-17 09:58:51.510297382 +0000
+@@ -21,6 +21,8 @@
+ const char *src;
+ Token current;
+ 
++#define MAX_TOKEN_LEN 64
++
+ // === TOKENIZER ===
+ void next_token() {
+     while (isspace(*src)) src++;
+@@ -29,7 +31,13 @@
+ 
+     if (isdigit(*src)) {
+         int i = 0;
+-        while (isdigit(*src) || *src == '.') current.text[i++] = *src++;
++        while (isdigit(*src) || *src == '.') {
++		if (i == MAX_TOKEN_LEN - 1) {
++			fprintf(stderr, "Error: Token too long, must be less than 64 chars\n");
++			exit(1);
++		}
++		current.text[i++] = *src++;
++	}
+         current.text[i] = '\0';
+         current.type = TOKEN_NUMBER;
+         return;
+@@ -37,7 +45,13 @@
+ 
+     if (isalpha(*src)) {
+         int i = 0;
+-        while (isalnum(*src)) current.text[i++] = *src++;
++	while (isalnum(*src)) {
++		if (i == MAX_TOKEN_LEN - 1) {
++			fprintf(stderr, "Error: Token too long, must be less than 64 chars\n");
++			exit(1);
++		}
++		current.text[i++] = *src++;
++	}
+         current.text[i] = '\0';
+         if (strcmp(current.text, "let") == 0) current.type = TOKEN_LET;
+         else current.type = TOKEN_ID;
